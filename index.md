@@ -58,13 +58,20 @@
 3. 经验分享Presentation 1次（教师和助教打3分 + 学生互评打7分）
 4. _加分题_
 >注意作业一般一次10分，是个相对分数，不是最后的绝对分
+
+---
+
 ## 四、联系方式：（email）
+
 1. 教师:  鲁志 zhilu@tsinghua.edu.cn
 2. 助教：
 - 白一兰  baiyl22@mails.tsinghua.edu.cn
 - 高乐天  glt23@mails.tsinghua.edu.cn
+
 ## 五、about bioinformatics
+
 > __4 steps：question→information→analysis→modeling__
+
 1. Question:  Biological /Medical Knowledge
 2. Information: Biological /Medical Data _(images and __sequences__)_
 - HGP 2001
