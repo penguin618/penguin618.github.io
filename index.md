@@ -97,7 +97,20 @@ ___two different type of bioinformatics research___
 
 # 六、开始准备与软件安装
 
+## 1.Document your work (utilizing github & Markdown)
 
+- [Markdown cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+- recommended software: Typora
+
+## 2.Backup your work
+
+
+- [Tsinghua Cloud](https://cloud.tsinghua.edu.cn/)
+- [Github](github.com)
+
+## 3.Setup Docker
+
+- [how to setup a docker?](https://book.ncrnalab.org/teaching/getting-started/docker)
 
 ---
 
