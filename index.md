@@ -69,6 +69,8 @@
 - 白一兰  baiyl22@mails.tsinghua.edu.cn
 - 高乐天  glt23@mails.tsinghua.edu.cn
 
+---
+
 ## 五、about bioinformatics
 
 > __4 steps：question→information→analysis→modeling__
