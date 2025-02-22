@@ -100,7 +100,7 @@ ___two different type of bioinformatics research___
 ## 1.Document your work (utilizing github & Markdown)
 
 - [Markdown cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
-- recommended software: Typora
+- recommended software: __Typora__
 
 ## 2.Backup your work
 
