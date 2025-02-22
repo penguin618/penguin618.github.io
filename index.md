@@ -22,6 +22,7 @@
 3. week 11-16 ：python （optional）
 
 >We teach professional skills in bioinformatics. These skills are not just running software. They will give you freedom of exploring various real data.
+
 > 我们将教授生物信息学方面的专业技能，这些技能不是单纯地运行软件的能力，而是让你们拥有探索各种真实数据的自由。
 
 ### 2. teaching material
