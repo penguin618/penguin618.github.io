@@ -84,14 +84,20 @@
 > ___What's the diffenrence between model and algorithm?___
    - Model: such as linear/logistic regression, discriminant analysis, dicision tree, deep learning, hidden markov model……
    - Algorithm: such as number sorting algorithm, dynamic programming algorithm……
+
  > The algorithm is the concrete tool to realize the function, whereas model is the theoretical framework to explain and predict. Both play key roles during the bioinformatics research and are commonly utilized.
 
-___- two different type of bioinformatics research___
+
+___two different type of bioinformatics research___
+
 - hypothesis driven __VS__ data driven
+
 ---
+
 # The Study plan of bioinformatics
 1. Listen to lectures carefully.
 2. Finish the homework and submit it in time.
 3. __Group work.__ Study with others and help each other.
 4. __Practice makes perfect!!__ Always practise instead of just watching.
+
 > I hear and I forget, I see and I remember, I do and I understand
