@@ -63,7 +63,7 @@
    - Organismal: gut, feces, lung 
 3. Analysis: Data Clean & Feature Extraction
 4. Modeling: Probabilistic Model & Computational Algorithm
-> ___what's the diffenrence between model and algorithm?___
+> ___What's the diffenrence between model and algorithm?___
    - Model: such as linear/logistic regression, discriminant analysis, dicision tree, deep learning, hidden markov model……
    - Algorithm: such as number sorting algorithm, dynamic programming algorithm……
  > The algorithm is the concrete tool to realize the function, whereas model is the theoretical framework to explain and predict. Both play key roles during the bioinformatics research and are commonly utilized.
