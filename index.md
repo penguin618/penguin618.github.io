@@ -116,9 +116,9 @@ ___two different type of bioinformatics research___
 
 # The Study plan of bioinformatics
 
-## 1. Listen to lectures carefully.
-## 2. Finish the homework and submit it in time.
-## 3. __Group work.__ Study with others and help each other.
-## 4. __Practice makes perfect!!__ Always practise instead of just watching.
+### 1. Listen to lectures carefully.
+### 2. Finish the homework and submit it in time.
+### 3. __Group work.__ Study with others and help each other.
+### 4. __Practice makes perfect!!__ Always practise instead of just watching.
 
 > I hear and I forget, I see and I remember, I do and I understand
