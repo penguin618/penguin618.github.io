@@ -95,6 +95,10 @@ ___two different type of bioinformatics research___
 
 - hypothesis driven __VS__ data driven
 
+# 六、开始准备与软件安装
+
+
+
 ---
 
 # The Study plan of bioinformatics
