@@ -26,7 +26,7 @@
 
 ### 2. teaching material
 
-1.  __ major：PPT & [Bioinformatics Tutorial] (Bioinformatics Tutorial](https://book.ncrnalab.org/teaching) __
+1.  __ major：PPT & [Bioinformatics Tutorial](https://book.ncrnalab.org/teaching) __
 2. reference book：《鸟哥的Linux私房菜－基础学习篇》（推荐章节见tutorial）
 3. ___most important___：online search，chatgpt，deepseek……
 
@@ -83,6 +83,7 @@
 4. Modeling: Probabilistic Model & Computational Algorithm
 
 > ___What's the diffenrence between model and algorithm?___
+   
    - Model: such as linear/logistic regression, discriminant analysis, dicision tree, deep learning, hidden markov model……
    - Algorithm: such as number sorting algorithm, dynamic programming algorithm……
 
