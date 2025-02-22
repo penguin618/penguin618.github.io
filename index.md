@@ -7,28 +7,37 @@
 - 物理化学
 - 量子力学（optional）
 - 计算机程序设计基础（有基本编程能力，接触过linux）
+
 ### 2. 后续课程推荐：
 - 基于Python的科学与数值计算
 - 清华大学AI课程
 ------
+
 ## 二、学什么 [《生物信息学》教学大纲 - 2025春](https://365.kdocs.cn/l/caAbfIt5y8Fk)
 ### 1. programming skills
+
 1. week 1-4 ：linux （bash）
 2. week 5-16 ：R
 3. week 11-16 ：python （optional）
+
 >We teach professional skills in bioinformatics. These skills are not just running software. They will give you freedom of exploring various real data.
 > 我们将教授生物信息学方面的专业技能，这些技能不是单纯地运行软件的能力，而是让你们拥有探索各种真实数据的自由。
+
 ### 2. teaching material
+
 1. __major：PPT & [Bioinformatics Tutorial | Bioinformatics Tutorial](https://book.ncrnalab.org/teaching)__
 2. reference book：《鸟哥的Linux私房菜－基础学习篇》（推荐章节见tutorial）
 3. ___most important___：online search，chatgpt，deepseek……
+
 ### 3. learning method
+
 1. In-class Learning ( _1.5hr each week_, ~22 hr)
 - Lecture, Q&A
 - TA Demon, Q&A
 - Students:
 - Practicing
 - Experience Sharing __(Peer Learning)__
+
 2. After-class Study (_3-5 hrs each week_, ~50-80 hr)
 - Self-learning and practicing
 - Group study __(Peer Learning)__
@@ -37,6 +46,7 @@
 - Programming in Linux and/or R
 - NGS Analysis
 - AI Tool
+
 ---
 ## 三、评分标准
 1. 20% 课堂互动问题
