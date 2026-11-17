@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f6f3e9">
+  <title>沙滩好朋友 · 一起去海边</title>
+  <style>
+    :root { color-scheme: light; --ink: #244c48; --paper: #f6f3e9; --muted: #7b8c80; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif; }
+    button { font: inherit; -webkit-tap-highlight-color: transparent; }
+    .page { max-width: 1440px; margin: auto; padding: 30px 48px 22px; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 800; letter-spacing: 1px; }
+    .brand-icon { width: 32px; height: 32px; background: #e8b44c; color: #fff9e8; border-radius: 50%; display: grid; place-items: center; }
+    .edition { color: var(--muted); font-size: 10px; letter-spacing: 2px; }
+    .intro { text-align: center; padding: 42px 0 28px; }
+    .eyebrow { margin: 0 0 12px; font-size: 10px; font-weight: 700; letter-spacing: 4px; color: #9b855b; }
+    h1 { font-size: clamp(30px, 4.4vw, 52px); font-weight: 800; letter-spacing: 3px; line-height: 1.35; margin: 0; }
+    h1 span { color: #d99b3e; }
+    .description { color: #7c887c; font-size: 13px; letter-spacing: 1.4px; line-height: 1.9; margin: 14px 0 0; }
+    .scene-card { position: relative; overflow: hidden; border-radius: 26px; background: #aee0dc; box-shadow: 0 14px 40px #3c695b0c; isolation: isolate; }
+    .scene { display: block; width: 100%; height: auto; cursor: crosshair; }
+    .scene-label { position: absolute; top: 23px; left: 26px; display: flex; align-items: center; gap: 8px; color: #37635b; font-size: 10px; letter-spacing: 1.5px; pointer-events: none; }
+    .scene-label i { display: block; width: 6px; height: 6px; border-radius: 50%; background: #4c9d81; box-shadow: 0 0 0 4px #ffffff35; }
+    .weather { position: absolute; top: 20px; right: 24px; font-size: 11px; color: #47776a; background: #fff9e56b; padding: 8px 12px; border-radius: 30px; pointer-events: none; }
+    .caption { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 11px; letter-spacing: 1.4px; color: #876b43; white-space: nowrap; pointer-events: none; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; padding: 20px 4px; gap: 16px; }
+    .friends { display: flex; gap: 20px; font-size: 11px; color: #718277; }
+    .friends span { display: flex; align-items: center; gap: 7px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; background: #345c67; }
+    .dot.green { background: #63aa69; }
+    .controls { display: flex; gap: 8px; }
+    .control { border: 1px solid #dfe4d9; background: #ffffff60; color: #577267; padding: 9px 15px; font-size: 11px; border-radius: 30px; cursor: pointer; display: flex; gap: 7px; align-items: center; transition: background .2s, transform .2s; }
+    .control:hover { background: #e8eddf; transform: translateY(-1px); }
+    .control:focus-visible { outline: 3px solid #e8b44c; outline-offset: 3px; }
+    .control svg { width: 13px; height: 13px; }
+    .primary { background: #2e5c50; color: #fffaf0; border-color: #2e5c50; }
+    .primary:hover { background: #3a7261; }
+    footer { border-top: 1px solid #e0e4d8; padding-top: 17px; display: flex; justify-content: space-between; font-size: 10px; letter-spacing: 1px; color: #9a9f8c; }
+    .cloud { animation: drift 13s ease-in-out infinite alternate; }
+    .cloud.second { animation-delay: -7s; animation-duration: 18s; }
+    .foam { animation: tide 6s ease-in-out infinite; }
+    .foam.second { animation-delay: -3s; opacity: .5; }
+    .wave-line { animation: ripple 5s ease-in-out infinite alternate; }
+    .leaf { transform-box: fill-box; transform-origin: right bottom; animation: leaf 5s ease-in-out infinite alternate; }
+    .sun-rays { transform-box: fill-box; transform-origin: center; animation: sunshine 32s linear infinite; }
+    .bird { animation: soar 7s ease-in-out infinite alternate; }
+    .scene-card.paused *, .scene-card.paused *::before { animation-play-state: paused !important; }
+    #sky-day, #sky-evening, #sun, #water, #sand, #far-island { transition: opacity 1.5s, filter 1.5s; }
+    #sky-evening { opacity: 0; }
+    .evening #sky-evening { opacity: 1; }
+    .evening #sun { filter: saturate(.85); }
+    .evening #water { filter: hue-rotate(12deg) saturate(.75); }
+    .evening #sand { filter: saturate(.85) sepia(.12); }
+    .evening .weather, .evening .scene-label { color: #765e66; }
+    @keyframes drift { to { transform: translateX(28px); } }
+    @keyframes tide { 0%, 100% { transform: translateY(-5px); opacity: .6; } 50% { transform: translateY(9px); opacity: .95; } }
+    @keyframes ripple { to { transform: translateX(16px); opacity: .4; } }
+    @keyframes leaf { to { transform: rotate(3deg); } }
+    @keyframes sunshine { to { transform: rotate(360deg); } }
+    @keyframes soar { to { transform: translate(-35px, 9px); } }
+    @media (max-width: 700px) {
+      .page { padding: 22px 18px 18px; }
+      .edition { font-size: 8px; letter-spacing: 1px; }
+      .intro { padding: 34px 0 24px; }
+      h1 { letter-spacing: 1px; }
+      .description { font-size: 11px; letter-spacing: .6px; }
+      .scene-card { border-radius: 20px; }
+      .scene { width: 160%; max-width: none; margin-left: -30%; }
+      .scene-label { top: 15px; left: 15px; font-size: 8px; }
+      .weather { top: 12px; right: 12px; font-size: 9px; }
+      .caption { bottom: 13px; font-size: 9px; }
+      .toolbar { flex-direction: column; padding: 18px 0; gap: 15px; }
+      footer { font-size: 8px; letter-spacing: .4px; gap: 10px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .scene-card * { animation: none !important; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div class="brand"><span class="brand-icon" aria-hidden="true">✳</span>海边放个假</div>
+      <span class="edition">A LITTLE SEASIDE STORY · 001</span>
+    </header>
+    <section class="intro">
+      <p class="eyebrow">SUNSHINE / WAVES / GOOD FRIENDS</p>
+      <h1>好朋友，<span>一起浪！</span></h1>
+      <p class="description">一只企鹅，一只鹦鹉。把快乐传来传去，把时间交给大海。</p>
+    </section>
+
+    <div class="scene-card" id="sceneCard">
+      <div class="scene-label"><i></i><span id="sceneLabel">正在享受海边时光</span></div>
+      <div class="weather" id="weather">☀ 晴朗 · 快乐满格</div>
+      <svg class="scene" id="scene" viewBox="0 0 1200 610" role="img" aria-labelledby="sceneTitle sceneDesc" xmlns="http://www.w3.org/2000/svg">
+        <title id="sceneTitle">企鹅和鹦鹉的沙滩假日</title>
+        <desc id="sceneDesc">温暖的阳光下，一只蓝色企鹅和一只绿色鹦鹉在沙滩上来回传彩色皮球。海浪轻轻拍岸，棕榈树随风摇摆。点击沙滩会出现小星星。</desc>
+        <defs>
+          <linearGradient id="skyGradient" x2="0" y2="1"><stop stop-color="#bce5df"/><stop offset="1" stop-color="#e5f0d7"/></linearGradient>
+          <linearGradient id="eveningGradient" x2="0" y2="1"><stop stop-color="#d5b9ce"/><stop offset=".65" stop-color="#f1c8b3"/><stop offset="1" stop-color="#ffe2b7"/></linearGradient>
+          <linearGradient id="seaGradient" x2="0" y2="1"><stop stop-color="#6fbdb6"/><stop offset="1" stop-color="#a4dbcb"/></linearGradient>
+          <linearGradient id="sandGradient" x2="0" y2="1"><stop stop-color="#f9e6b1"/><stop offset="1" stop-color="#f2d294"/></linearGradient>
+          <radialGradient id="sunHalo"><stop stop-color="#fff6c6" stop-opacity=".8"/><stop offset="1" stop-color="#fff6c6" stop-opacity="0"/></radialGradient>
+          <linearGradient id="penguinGradient" x2="1" y2="1"><stop stop-color="#375c69"/><stop offset="1" stop-color="#24444f"/></linearGradient>
+          <linearGradient id="parrotGradient" x2="1" y2="1"><stop stop-color="#85bf6c"/><stop offset="1" stop-color="#56a66a"/></linearGradient>
+          <pattern id="sandTexture" width="110" height="80" patternUnits="userSpaceOnUse"><circle cx="15" cy="15" r="1.1" fill="#cda866" opacity=".35"/><circle cx="67" cy="47" r="1" fill="#cda866" opacity=".25"/><path d="M87 21h4M35 64h3" stroke="#fff2d0" stroke-width="2" stroke-linecap="round"/></pattern>
+          <g id="sparkleShape"><path d="M0 -10Q2 -2 10 0Q2 2 0 10Q-2 2 -10 0Q-2 -2 0 -10" fill="#fff9dc"/></g>
+        </defs>
+        <rect id="sky-day" width="1200" height="350" fill="url(#skyGradient)"/>
+        <rect id="sky-evening" width="1200" height="350" fill="url(#eveningGradient)"/>
+        <g id="sun" transform="translate(890 115)">
+          <circle r="102" fill="url(#sunHalo)"/>
+          <g class="sun-rays" stroke="#f5c866" stroke-width="3" stroke-linecap="round" opacity=".65"><path d="M0 -61v-10M0 61v10M61 0h10M-61 0h-10M43 -43l7 -7M-43 43l-7 7M43 43l7 7M-43 -43l-7 -7"/></g>
+          <circle r="43" fill="#ffdb82"/><circle cx="-12" cy="-4" r="2.6" fill="#b78b40"/><circle cx="12" cy="-4" r="2.6" fill="#b78b40"/>
+          <path d="M-7 9q7 7 14 0" fill="none" stroke="#b78b40" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+        <g class="cloud" fill="#fffcf0" opacity=".85"><path d="M197 113c-17 0-21-24-5-30 0-24 36-31 47-10 16-9 35 1 35 16 25-4 31 24 9 24Z"/><path d="M625 82c-15 0-17-19-4-24 4-20 29-22 38-7 13-4 24 4 25 14 19-1 23 17 5 17Z"/></g>
+        <g class="cloud second" fill="#fffdf0" opacity=".6"><path d="M995 191c-18-2-19-24-3-27 3-23 34-25 44-6 18-6 35 5 34 18 19-1 22 15 5 15Z"/><path d="M360 187c-12 0-13-15-2-19 3-16 24-18 31-4 15-4 24 8 20 14 19-1 21 9 4 9Z"/></g>
+        <g class="bird" fill="none" stroke="#5a8d84" stroke-width="2.5" stroke-linecap="round"><path d="M714 143q8-9 16 0q8-9 16 0M758 168q5-6 10 0q5-6 10 0"/></g>
+        <g id="far-island" fill="#7bb4a0"><path d="M0 264q65-50 135-12t127 12Z"/><path d="M1046 264q73-29 154-17v24Z"/></g>
+        <g id="water">
+          <path d="M0 263Q300 257 600 265T1200 263V420H0Z" fill="url(#seaGradient)"/>
+          <g stroke="#d1eee0" stroke-linecap="round" fill="none" stroke-width="3" opacity=".6" class="wave-line"><path d="M37 291h65m22 0h22m240-12h85m34 0h20m309 12h76m25 0h21M190 321h73m22 0h25m328-9h86m27 0h23m230 7h72"/></g>
+          <path d="M0 352Q160 376 330 351T670 353T1000 351T1270 355V443H0Z" fill="#bde4ce"/>
+        </g>
+        <g id="sand"><path d="M0 391Q170 416 355 385T699 388T1027 383T1200 391V610H0Z" fill="url(#sandGradient)"/><path d="M0 391Q170 416 355 385T699 388T1027 383T1200 391V610H0Z" fill="url(#sandTexture)"/></g>
+        <path class="foam" d="M-20 376Q160 405 350 375T699 378T1027 373T1230 381" stroke="#fffbee" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path class="foam second" d="M-20 362Q160 391 350 361T699 364T1027 359T1230 367" stroke="#fffbee" stroke-width="2.5" fill="none"/>
+
+        <!-- Palm tree and a very small holiday camp. -->
+        <ellipse cx="100" cy="464" rx="107" ry="14" fill="#cda86b" opacity=".15"/>
+        <path d="M86 462q54-143 13-264" stroke="#b38e58" stroke-width="24" fill="none" stroke-linecap="round"/>
+        <path d="M94 444l14 4m-7-42 15 4m-9-42 16 3m-13-41 16 1m-16-40 16-1m-22-37 16-4" stroke="#98774c" stroke-width="3" opacity=".55"/>
+        <g class="leaf" fill="#4a9172"><path d="M102 216Q32 130-51 191Q41 166 102 216Z"/><path d="M101 216Q14 188-26 270Q31 219 101 216Z"/><path d="M102 215Q57 116 121 99Q90 154 102 215Z"/><path d="M103 214Q162 117 231 164Q153 158 103 214Z"/><path d="M103 215Q192 177 233 253Q163 211 103 215Z"/><path d="M102 215Q151 217 158 289Q127 249 102 215Z"/></g>
+        <circle cx="98" cy="219" r="12" fill="#967348"/><circle cx="115" cy="225" r="10" fill="#a3824f"/>
+        <g transform="translate(1045 323)">
+          <ellipse cx="10" cy="141" rx="87" ry="12" fill="#cba86b" opacity=".2"/>
+          <path d="M0 0l-17 143" stroke="#b38c59" stroke-width="5"/>
+          <path d="M-91 27Q-55-44 0-40Q54-39 91 27Q47 16 0 28Q-45 17-91 27" fill="#e58f6d"/>
+          <path d="M0-40Q-31-18-34 23Q-18 24 0 28Q19 23 35 23Q32-17 0-40" fill="#fff1cf"/>
+          <path d="M-8-45l2-8" stroke="#b38c59" stroke-width="4" stroke-linecap="round"/>
+          <g transform="translate(16 94) rotate(-10)"><path d="M0 0h52v34H0Z" fill="#efb17c"/><path d="M8 0v34m13-34v34m13-34v34m12-34v34" stroke="#fff0cf" stroke-width="6"/><path d="M-5 37h63" stroke="#fff2d6" stroke-width="4" stroke-linecap="round"/></g>
+        </g>
+
+        <!-- Footprints, shells and a tiny sandcastle. -->
+        <g fill="#c6a16b" opacity=".28"><ellipse cx="325" cy="490" rx="8" ry="4" transform="rotate(-20 325 490)"/><ellipse cx="345" cy="506" rx="8" ry="4"/><ellipse cx="366" cy="481" rx="7" ry="4"/><ellipse cx="386" cy="497" rx="7" ry="4"/><path d="M845 489l-7 8 10-2-2 8 7-8 8 1-7-7m24 22-7 8 10-2-2 8 7-8 8 1-7-7"/></g>
+        <g transform="translate(209 507)"><ellipse cy="36" rx="53" ry="8" fill="#cba05d" opacity=".18"/><path d="M-43 33v-37h13v9h12V-4h13v37M6 33v-63h12v10h13v-10h12v63" fill="#dfbc7a"/><path d="M-34 33V15h16v18m34 0V4q10-12 20 0v29" fill="#caa15e"/><path d="M23-31v-27" stroke="#9a8359" stroke-width="2"/><path d="M24-58l26 7-26 8" fill="#e68e6e"/></g>
+        <g transform="translate(953 526) rotate(17)"><path d="M-13 3Q-22-17-6-18Q0-31 8-17Q26-14 13 5Z" fill="#edaa91"/><path d="M0 4l-6-19M0 4l8-19M0 4v-23" stroke="#d88d78" stroke-width="1.4"/></g>
+        <path d="M109 545l8-15 4 16 17 3-14 9 1 16-12-11-16 5 7-15-10-10Z" fill="#df9b70" transform="rotate(15 113 551)"/>
+        <g fill="none" stroke="#d3af70" stroke-width="2" stroke-linecap="round" opacity=".5"><path d="M525 541l4-3m9 2 3 1m162 17 4-2m-12-8 2 1M53 482h5m923-11 3-2"/></g>
+
+        <!-- Penguin: each limb has a separate animation pivot. -->
+        <ellipse id="penguinShadow" cx="433" cy="467" rx="63" ry="12" fill="#b89459" opacity=".23"/>
+        <g id="penguin" transform="translate(433 446)">
+          <g id="penguinBody">
+            <g id="penguinLeftFlipper" transform="translate(-44 -70)"><path d="M0 0Q-47 12-42 44Q-33 57-6 25Z" fill="#2b4d59"/></g>
+            <g id="penguinRightFlipper" transform="translate(44 -70)"><path d="M0 0Q44-15 42 9Q41 28 5 30Z" fill="#2b4d59"/></g>
+            <path d="M-35 10Q-58 6-48-11Q-31-22-14-9L-9 9Z" fill="#efb24f"/>
+            <path d="M13 11Q43 18 51 5Q54-11 31-14L12-9Z" fill="#efb24f"/>
+            <path d="M-54-49Q-59-144-5-158Q54-171 60-77Q73-6 13 0Q-48 5-54-49Z" fill="url(#penguinGradient)"/>
+            <path d="M-38-67Q-40-106-20-105Q-4-102 7-114Q27-130 42-91Q60-21 15-15Q-33-9-38-67Z" fill="#fff8df"/>
+            <path d="M-34-107Q-39-137-17-137Q-2-136 0-118Q6-143 26-136Q45-130 40-104Q14-94-4-97Z" fill="#fff8df"/>
+            <ellipse cx="-18" cy="-119" rx="4.1" ry="5.5" fill="#28464b"/><ellipse cx="22" cy="-120" rx="4.1" ry="5.5" fill="#28464b"/>
+            <circle cx="-17" cy="-121" r="1.3" fill="white"/><circle cx="23" cy="-122" r="1.3" fill="white"/>
+            <ellipse cx="-29" cy="-104" rx="9" ry="5" fill="#e8aa92" opacity=".75"/><ellipse cx="34" cy="-106" rx="8" ry="5" fill="#e8aa92" opacity=".75"/>
+            <path d="M-9-111Q3-119 15-111L4-99Z" fill="#efb24f"/>
+            <path d="M-43-88Q-1-68 49-92L48-77Q8-57-45-73Z" fill="#e68f6f"/>
+            <path d="M-25-76l-6 41 16-7 9 10 2-41" fill="#e68f6f"/><path d="M-25-66l19 2" stroke="#f8c3a0" stroke-width="4"/>
+            <path d="M-13-157q-2-15 9-20m-1 19q5-15 16-15" stroke="#345866" fill="none" stroke-width="5" stroke-linecap="round"/>
+          </g>
+        </g>
+
+        <!-- Parrot: bright feathers, a curved beak and dancing feet. -->
+        <ellipse id="parrotShadow" cx="770" cy="466" rx="54" ry="11" fill="#b89459" opacity=".23"/>
+        <g id="parrot" transform="translate(770 442)">
+          <g id="parrotBody">
+            <path d="M22-31Q72-17 79 13L42-2Q66 21 58 29L10-17Z" fill="#41958b"/>
+            <path d="M-12-3l-5 23m-12 0h26M21-4l7 24m-11 0h24" stroke="#b18a51" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <path d="M-44-62Q-61-118-19-140Q33-164 45-102Q57-64 41-29Q29 6-5 0Q-45-4-44-62Z" fill="url(#parrotGradient)"/>
+            <path d="M-22-74Q-1-98 18-73Q40-27 10-15Q-24-7-30-35Z" fill="#b5d77b"/>
+            <g id="parrotWing" transform="translate(21 -77)"><path d="M0 0Q47 6 40 48Q16 41-2 20Z" fill="#3f9981"/><path d="M9 17l22 21m-16-8 7 12" stroke="#74b595" stroke-width="3" stroke-linecap="round"/></g>
+            <path d="M-30-128Q-44-165-26-171Q-18-170-14-147Q-17-178-2-178Q11-176 5-148Q13-170 25-162Q35-154 19-139Z" fill="#6aad68"/>
+            <path d="M-39-116Q-38-137-18-135Q4-130-3-108Q-12-91-29-99Z" fill="#fff5ce"/>
+            <ellipse cx="-21" cy="-116" rx="4.6" ry="6" fill="#35544a"/><circle cx="-22" cy="-118" r="1.5" fill="white"/>
+            <path d="M-39-115Q-66-119-64-94Q-62-83-52-83Q-55-96-38-95Z" fill="#edab4d"/>
+            <path d="M-39-102L-53-94Q-51-81-41-86Z" fill="#bd8143"/>
+            <ellipse cx="-9" cy="-99" rx="8" ry="5" fill="#e9ad84" opacity=".75"/>
+            <path d="M10-140Q32-133 35-116" stroke="#a0cd7c" stroke-width="5" fill="none" stroke-linecap="round"/>
+          </g>
+        </g>
+
+        <ellipse id="ballShadow" cx="600" cy="465" rx="24" ry="5" fill="#b89459" opacity=".2"/>
+        <g id="ball" transform="translate(600 322)">
+          <g id="ballSpin">
+            <circle r="28" fill="#fff3cf"/>
+            <path d="M0 0L0-28A28 28 0 0 1 24.25 14Z" fill="#e98e70"/>
+            <path d="M0 0L-24.25 14A28 28 0 0 1 0-28Z" fill="#77b9b0"/>
+            <path d="M0 0L24.25 14A28 28 0 0 1-24.25 14Z" fill="#f2c45e"/>
+            <path d="M0-28Q20-10 0 0Q-11 15-24.25 14M0 0Q5 9 24.25 14" fill="none" stroke="#fff5dc" stroke-width="2"/>
+            <circle r="5" fill="#fff5dc"/><ellipse cx="-11" cy="-14" rx="5" ry="8" transform="rotate(30 -11 -14)" fill="white" opacity=".35"/>
+          </g>
+        </g>
+        <g id="effects" pointer-events="none"></g>
+      </svg>
+      <div class="caption">浪花轻轻，快乐刚刚好。</div>
+    </div>
+
+    <div class="toolbar">
+      <div class="friends"><span><i class="dot"></i>企鹅 · 小团</span><span><i class="dot green"></i>鹦鹉 · 阿绿</span></div>
+      <div class="controls">
+        <button class="control" id="timeButton" type="button" aria-pressed="false"><span aria-hidden="true">◑</span><span id="timeText">切换黄昏</span></button>
+        <button class="control primary" id="playButton" type="button" aria-pressed="false"><svg id="playIcon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 3h3v10H4zm5 0h3v10H9z"/></svg><span id="playText">暂停一下</span></button>
+      </div>
+    </div>
+    <footer><span>留一点时间，给无所事事的快乐。</span><span>✧ 点击沙滩，撒一点小星光</span></footer>
+  </main>
+  <script>
+    (() => {
+      const $ = id => document.getElementById(id);
+      const card = $('sceneCard');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let playing = !reduceMotion.matches;
+      let evening = false;
+      let time = 0.85;
+      let last = null;
+      const particles = [];
+      const svgNS = 'http://www.w3.org/2000/svg';
+
+      function updateControls() {
+        card.classList.toggle('paused', !playing);
+        $('playButton').setAttribute('aria-pressed', String(!playing));
+        $('playText').textContent = playing ? '暂停一下' : '继续玩耍';
+        $('sceneLabel').textContent = playing ? '正在享受海边时光' : '把这一刻留住';
+        $('playIcon').innerHTML = playing ? '<path d="M4 3h3v10H4zm5 0h3v10H9z"/>' : '<path d="M5 2l9 6-9 6z"/>';
+      }
+      $('playButton').addEventListener('click', () => { playing = !playing; updateControls(); });
+      $('timeButton').addEventListener('click', () => {
+        evening = !evening;
+        card.classList.toggle('evening', evening);
+        $('timeButton').setAttribute('aria-pressed', String(evening));
+        $('timeText').textContent = evening ? '切换晴天' : '切换黄昏';
+        $('weather').textContent = evening ? '☀ 落日 · 温柔时分' : '☀ 晴朗 · 快乐满格';
+      });
+      reduceMotion.addEventListener('change', event => { playing = !event.matches; updateControls(); });
+
+      function pose(t) {
+        const phase = (t % 3.6) / 3.6;
+        const forward = phase < .5;
+        const progress = forward ? phase * 2 : (phase - .5) * 2;
+        const x = forward ? 501 + progress * 199 : 700 - progress * 199;
+        const y = 350 - Math.sin(progress * Math.PI) * 111;
+        $('ball').setAttribute('transform', `translate(${x} ${y})`);
+        $('ballSpin').setAttribute('transform', `rotate(${t * 115})`);
+        $('ballShadow').setAttribute('cx', x);
+        $('ballShadow').setAttribute('rx', 24 - Math.sin(progress * Math.PI) * 9);
+        $('ballShadow').setAttribute('opacity', .22 - Math.sin(progress * Math.PI) * .12);
+
+        const pHit = Math.exp(-Math.pow(Math.min(phase, 1 - phase) * 24, 2));
+        const aHit = Math.exp(-Math.pow((phase - .5) * 24, 2));
+        const pBob = Math.sin(t * 3.5) * 3 - pHit * 9;
+        const aBob = Math.sin(t * 4 + 1) * 4 - aHit * 16;
+        $('penguin').setAttribute('transform', `translate(${433 + Math.sin(t * 1.8) * 5} ${446 + pBob})`);
+        $('penguinBody').setAttribute('transform', `rotate(${Math.sin(t * 2.1) * 3 + pHit * 4} 0 -50)`);
+        $('penguinRightFlipper').setAttribute('transform', `translate(44 -70) rotate(${-16 - pHit * 45 + Math.sin(t * 5) * 9})`);
+        $('penguinLeftFlipper').setAttribute('transform', `translate(-44 -70) rotate(${Math.sin(t * 4) * 12})`);
+        $('parrot').setAttribute('transform', `translate(${770 + Math.sin(t * 2 + 1) * 5} ${442 + aBob})`);
+        $('parrotBody').setAttribute('transform', `rotate(${Math.sin(t * 3) * 3 - aHit * 9} 0 -45)`);
+        $('parrotWing').setAttribute('transform', `translate(21 -77) rotate(${-18 - Math.sin(t * 7) * 15 - aHit * 42})`);
+        $('penguinShadow').setAttribute('rx', 63 + pBob * .6);
+        $('parrotShadow').setAttribute('rx', 54 + aBob * .55);
+      }
+
+      $('scene').addEventListener('pointerdown', event => {
+        const point = $('scene').createSVGPoint();
+        point.x = event.clientX;
+        point.y = event.clientY;
+        const matrix = $('scene').getScreenCTM();
+        if (!matrix) return;
+        const pos = point.matrixTransform(matrix.inverse());
+        if (pos.y < 380) return;
+        for (let i = 0; i < 9; i++) {
+          const star = document.createElementNS(svgNS, 'use');
+          star.setAttribute('href', '#sparkleShape');
+          const angle = Math.PI * 2 * i / 9;
+          const distance = 25 + Math.random() * 35;
+          const particle = { node: star, x: pos.x, y: pos.y, vx: Math.cos(angle) * distance, vy: Math.sin(angle) * distance - 30, age: 0, scale: .3 + Math.random() * .5 };
+          star.setAttribute('transform', `translate(${pos.x} ${pos.y}) scale(${particle.scale})`);
+          $('effects').appendChild(star);
+          particles.push(particle);
+        }
+        // Bound temporary decoration even during a long pause.
+        while (particles.length > 90) particles.shift().node.remove();
+      });
+
+      function frame(now) {
+        const dt = last === null ? 0 : Math.min((now - last) / 1000, .05);
+        last = now;
+        if (playing && !document.hidden) {
+          time += dt;
+          pose(time);
+        }
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.age += dt;
+          if (p.age >= 1) { p.node.remove(); particles.splice(i, 1); continue; }
+          const travel = reduceMotion.matches ? 0 : p.age;
+          p.node.setAttribute('transform', `translate(${p.x + p.vx * travel} ${p.y + p.vy * travel + 35 * travel * travel}) scale(${p.scale * (1 - p.age * .6)}) rotate(${travel * 80})`);
+          p.node.setAttribute('opacity', 1 - p.age);
+        }
+        requestAnimationFrame(frame);
+      }
+      updateControls();
+      pose(time);
+      requestAnimationFrame(frame);
+    })();
+  </script>
+</body>
+</html>
